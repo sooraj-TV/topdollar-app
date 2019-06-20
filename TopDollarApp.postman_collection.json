@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "f8f74dab-74ca-40f9-93f8-e204412bcfc9",
+		"name": "TopDollarApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetStoreLocation - Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/store-location/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"store-location",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCategories - Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/categories/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"categories",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddQuote - Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Sooraj",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "898989898987",
+							"type": "text"
+						},
+						{
+							"key": "store_name",
+							"value": "kollam",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "category_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "model_number",
+							"value": "889M",
+							"type": "text"
+						},
+						{
+							"key": "brand",
+							"value": "Zbrand",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Ths is the decsription fo the university amenju",
+							"type": "text"
+						},
+						{
+							"key": "quote_images[]",
+							"type": "file",
+							"src": [
+								"/C:/Users/Sooraj V/Pictures/02-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-IN.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/06-may-IN.jpg"
+							]
+						},
+						{
+							"key": "device_id",
+							"value": "adyg6hskmkl&2skolou09ss6sbbsh223",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/get-quote/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"get-quote",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login-Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj.v@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj12333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddQuote - DEV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Sooraj",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "898989898987",
+							"type": "text"
+						},
+						{
+							"key": "store_name",
+							"value": "kollam",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "category_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "model_number",
+							"value": "889M",
+							"type": "text"
+						},
+						{
+							"key": "brand",
+							"value": "Zbrand",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Ths is the decsription fo the university amenju",
+							"type": "text"
+						},
+						{
+							"key": "device_id",
+							"value": "adyg6hskmkl&2skolou09ss6sbbsh223",
+							"type": "text"
+						},
+						{
+							"key": "quote_images[]",
+							"type": "file",
+							"src": [
+								"/C:/Users/Sooraj V/Pictures/03-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/06-may-IN.jpg"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/get-quote/add",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"get-quote",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCategories - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/categories/list",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"categories",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStoreLocation - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/store-location/list",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"store-location",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

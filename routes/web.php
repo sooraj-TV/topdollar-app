@@ -21,5 +21,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('store-location/list', "ApiController@getStoreLocations");
         $router->get('categories/list', "ApiController@getCategories");
         $router->post('get-quote/add', "ApiController@addGetQuoteAppln");
+        $router->post('auth/login', 'AuthController@postLogin');
     //});
 });

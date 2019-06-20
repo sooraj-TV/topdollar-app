@@ -40,7 +40,8 @@ class Api extends Model{
             'model_number'  => $input['model_number'],
             'brand'         => $input['brand'],
             'description'   => $input['description'],
-            'device_token'  => $input['device_id']
+            'device_token'  => $input['device_id'],
+            'created_at'    => date("Y-m-d H:i:s")
         );
         //quote_images[]
         $quote_id = DB::table('quotes')->insertGetId($qData);
