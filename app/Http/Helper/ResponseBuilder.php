@@ -7,6 +7,6 @@ class ResponseBuilder {
             "data" => $data,             
             "status" => $status,
             "message" => $message
-        ]); 
+        ],$status); 
     }
 }

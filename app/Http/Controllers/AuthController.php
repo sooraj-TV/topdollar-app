@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
+use App\Http\Helper\ResponseBuilder;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
     }
 
     public function postLogin(Request $request)
-    {
+    {        
         $this->validate($request, [
             'email'    => 'required|email|max:255',
             'password' => 'required',
@@ -45,6 +46,8 @@ class AuthController extends Controller
 
         }
 
-        return response()->json(compact('token'));
+        //return response()->json(compact('token'));
+        $data = array('token' => $token);
+        return ResponseBuilder::result(200,"success",$data);
     }
 }
