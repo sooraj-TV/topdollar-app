@@ -8,6 +8,9 @@ class Api extends Model{
     //Function to get store location
     public static function getStoreLocations(){
         $data = DB::table('store_locations')->where('status', 1)->get();
+        if(empty($data)){
+            $data = array();
+        }
         return $data;
     }
 

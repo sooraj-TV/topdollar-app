@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Model\Api;
 use Illuminate\Http\Request;
+use App\Http\Helper\ResponseBuilder;
 
 class ApiController extends Controller
 {
@@ -13,17 +14,17 @@ class ApiController extends Controller
      */
     public function __construct()
     {
-        //
+        // return response()->json([
+        //     "data" => $store_locations,
+        //     "status" => 200,
+        //     "message" => "success"
+        // ]);
     }
 
     //get store location
     public function getStoreLocations(){        
-        $store_locations = Api::getStoreLocations();
-        return response()->json([
-            "data" => $store_locations,
-            "status" => 200,
-            "message" => "success"
-        ]);
+        $store_locations = Api::getStoreLocations();        
+        return ResponseBuilder::result(200, 'success', $store_locations);        
     }
 
     //get categories
@@ -31,55 +32,54 @@ class ApiController extends Controller
         $categories     = Api::getCategories();
         $filters        = Api::getFilters();
         $filter_values  = Api::getFilterValues();
-        return response()->json([
-            "data" => array(
-                "categories"    => $categories,
-                "filters"       => $filters,
-                "filter_values" => $filter_values
-            ),
-            "status" => 200,
-            "message" => "success"
-        ]);
+        $data = array(
+            "categories"    => $categories,
+            "filters"       => $filters,
+            "filter_values" => $filter_values
+        );
+        return ResponseBuilder::result(200, 'success', $data);        
     }
-
 
     //post get-quote appln
     public function addGetQuoteAppln(Request $request){
         $input = $request->all();
         if(!empty($input)){
             $quote_id = Api::addQuoteAppln($input);
-            //print_r($request->file('quote_images')); exit;
-            if(!empty($input['quote_images'])){
-                foreach($request->file('quote_images') as $image)
-                {
-                    $name = $image->getClientOriginalName();
-                    $image->move('public/quote-images/', $name);  
-                    $quote_image_data = array(
-                        'quote_id' => $quote_id,
-                        'image_path' => $name
-                    );
-                    Api::addQuoteImageAppln($quote_image_data);
-                }         
+            if($quote_id > 0){
+                if(!empty($input['quote_images'])){ // optional
+                    foreach($request->file('quote_images') as $image)
+                    {
+                        $name = $image->getClientOriginalName();
+                        $image->move('public/quote-images/', $name);  
+                        $quote_image_data = array(
+                            'quote_id' => $quote_id,
+                            'image_path' => $name
+                        );
+                        Api::addQuoteImageAppln($quote_image_data);
+                    }         
+                }
+                return ResponseBuilder::result(200, 'success'); // return success message if the contents stores in DB    
             }
-
-            return response()->json([   
-                "data" => array(),             
-                "status" => 200,
-                "message" => "success"
-            ]);
+            else{
+                return ResponseBuilder::result(500, 'error');    
+            }            
 
         }
-        else{
-            return response()->json([                
-                "data" => array(),
-                "status" => 500,
-                "message" => "error"
-            ]);
+        else{ // if input data is empty            
+            return ResponseBuilder::result(204, 'no_input_content');        
         }
         //return $input;
-
     }
 
+    public function sendPushNotification(Request $request){
+        $input = $request->all();
+        if($input['device'] == "android"){
+            return ResponseBuilder::sendPushNotification_android($input['device_id'], $input['message']);
+        }
+       
+
+
+    }
     
 
     

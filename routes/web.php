@@ -22,5 +22,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('categories/list', "ApiController@getCategories");
         $router->post('get-quote/add', "ApiController@addGetQuoteAppln");
         $router->post('auth/login', 'AuthController@postLogin');
+
+        $router->post('pushnotif/test', 'ApiController@sendPushNotification');
+
     //});
 });
