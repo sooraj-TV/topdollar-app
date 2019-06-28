@@ -57,4 +57,56 @@ class Api extends Model{
         DB::table('quote_images')->insert($idata);
         return true;
     }
+
+    public static function registerDeviceAppln($input = array()){
+        $data = array(
+            'device_id' => $input['device_id'],
+            'device_token' => $input['device_token']
+        );
+        $count = DB::table('users')->where('device_id', $input['device_id'])->count(); // check the device_id already exist in DB
+        if($count == 0){
+            DB::table('users')->insert($data);
+        }        
+        return true;
+    }
+
+    public static function postChatAssociateAppln($input = array()){
+        //$res = array();
+        $user_data = DB::table('users')->where('device_id', $input['device_id'])->first(); // get userdata by device_id
+        $user_id = $user_data->id;
+        
+        $chat_data = array(            
+            'user_id'           => $user_id,
+            'name'              => $input['name'],
+            'phone'             => $input['phone'],
+            'store_location_id' => $input['store_location_id'],
+            'question'          => $input['question'],
+            'created_at'        => date("Y-m-d H:i:s")         
+        );  
+        //insert chat details in conversation table- init
+        $chat_id = DB::table('chats')->insertGetId($chat_data);
+
+        // $msg_data = array(
+        // );
+        
+        //update user table with below details
+        DB::table('users')->where('id', $user_id)->update([
+            'name'  => $input['name'],
+            'phone' => $input['phone']
+        ]);
+        
+        return $chat_id;
+
+    }
+
+    //get admin tokens
+    public static function getUsers($type = ""){
+        $data = DB::table('users')->where('device_id', '!=', '');
+        if(!empty($type)){
+            $data = $data->where('type', $type);
+        }
+        $data = $data->get();
+        return $data;
+        
+    }
 }

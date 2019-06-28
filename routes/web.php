@@ -18,12 +18,14 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     //$router->group(['prefix' => 'v1'], function () use ($router) {
-        $router->get('store-location/list', "ApiController@getStoreLocations");
-        $router->get('categories/list', "ApiController@getCategories");
-        $router->post('get-quote/add', "ApiController@addGetQuoteAppln");
-        $router->post('auth/login', 'AuthController@postLogin');
+        $router->get('store-location/list', "ApiController@getStoreLocations");     // Get store location
+        $router->get('categories/list', "ApiController@getCategories");             // Get categories and filters
+        $router->post('get-quote/add', "ApiController@addGetQuoteAppln");           // Post "get a quote"
+        $router->post('auth/login', 'AuthController@postLogin');                    // Admin login
+        $router->post('device/register', 'ApiController@postRegisterDevice');       // Register devices once app init
+        $router->post('chat/start', 'ApiController@postChatAssociate');             // Submit "chat with associate" (chat init) 
 
-        $router->post('pushnotif/test', 'ApiController@sendPushNotification');
+        $router->post('pushnotif/test', 'ApiController@sendPushNotification_TEST');
 
     //});
 });

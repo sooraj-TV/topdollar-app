@@ -11,19 +11,17 @@ class ResponseBuilder {
     }
 
     //send push notification
-    public static function sendPushNotification_android($device_id, $message){
+    public static function sendPushNotification($registraion_ids = array(), $message = ""){
 
         //API URL of FCM
         $url = 'https://fcm.googleapis.com/fcm/send';
     
         /*api_key available in:
         Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/    
-        $api_key = 'AAAAID9A1KE:APA91bH4s4B5D4AUkPjQQJC7Ms-YAZLlZk_GUQk3va22Xi0vJll8PQt-T0v4A8-B4o_88bYnfa9_WPPVSFhBE-u_lgdb1yAe2296xkyPPgJMXCEYem3xl3T5f6p3Cqh7pF6atLcZ0E0i';
+        $api_key = env('FIREBASE_KEY');
                     
         $fields = array (
-            'registration_ids' => array (
-                    $device_id
-            ),
+            'registration_ids' => $registraion_ids,
             'data' => array (
                     "message" => $message
             )

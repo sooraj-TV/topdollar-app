@@ -71,12 +71,46 @@ class ApiController extends Controller
         //return $input;
     }
 
-    public function sendPushNotification(Request $request){
+    //send test push notification
+    public function sendPushNotification_TEST(Request $request){
         $input = $request->all();
-        if($input['device'] == "android"){
-            return ResponseBuilder::sendPushNotification_android($input['device_id'], $input['message']);
+        $device_tokens [] = $input['device_token'];        
+        return ResponseBuilder::sendPushNotification($device_tokens, $input['message']);        
+
+    }
+
+    //register device API
+    public function postRegisterDevice(Request $request){
+        $input = $request->all();
+        $data = Api::registerDeviceAppln($input);
+        if($data){
+            return ResponseBuilder::result(200, 'success');        
+        } else {
+            return ResponseBuilder::result(500, 'error');        
         }
-       
+    }
+
+    public function postChatAssociate(Request $request){
+        $input = $request->all();
+        $chat_id = Api::postChatAssociateAppln($input);
+        if($chat_id > 0){
+            //send push notification to all admins
+            $admins = Api::getUsers('admin'); // get admin users            
+            foreach($admins as $admin){
+                $admin_tokens[] = $admin->device_token;
+            }
+            //dd($admin_tokens);
+            $message = "Chat request from a user: ".$input['name'];
+            ResponseBuilder::sendPushNotification($admin_tokens, $message);
+            
+            $data = array(
+                'chat_id' => $chat_id
+            );
+            return ResponseBuilder::result(200, 'success', $data);   
+        }
+        else{
+            return ResponseBuilder::result(500, 'error');    
+        }
 
 
     }
