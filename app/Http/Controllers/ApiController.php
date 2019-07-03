@@ -71,17 +71,6 @@ class ApiController extends Controller
         //return $input;
     }
 
-    //send test push notification
-    public function sendPushNotification_TEST(Request $request){
-        $input = $request->all();
-        $device_tokens [] = $input['device_token'];    
-        $push_data = array(
-            'message' => $input['message']
-        ); 
-        return ResponseBuilder::sendPushNotification($device_tokens, $push_data);        
-
-    }
-
     //register device API
     public function postRegisterDevice(Request $request){
         $input = $request->all();
@@ -155,12 +144,37 @@ class ApiController extends Controller
     public function postChatMessages(Request $request){
         $input = $request->all();
         if(!empty($input)){
-            Api::postChatMessagesAppln($input);
+            $input['media_file'] = "";
+            if(!empty($input['media_file'])){ // optional - chat image 
+                $image = $request->file('media_file');
+                $name = $image->getClientOriginalName();
+                if($image->move('public/chat-images/', $name)){
+                    $input['media_file'] = $name;
+                }        
+            }            
+            $res = Api::postChatMessagesAppln($input);
+            if($res){
+                return ResponseBuilder::result(200, 'success'); 
+            } else {
+                return ResponseBuilder::result(500, 'error'); 
+            }
         } else {
             return ResponseBuilder::result(204, 'no_input_content');
         }
 
     }
+
+    //send test push notification
+    public function sendPushNotification_TEST(Request $request){
+        $input = $request->all();
+        $device_tokens [] = $input['device_token'];    
+        $push_data = array(
+            'message' => $input['message']
+        ); 
+        return ResponseBuilder::sendPushNotification($device_tokens, $push_data);        
+
+    }
+
     
 
     

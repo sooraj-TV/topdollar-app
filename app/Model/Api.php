@@ -113,10 +113,12 @@ class Api extends Model{
     //get chat details from chat-id
     public static function getChatDetails($chat_id = ""){
         $data = DB::table("chats as c")
-                ->select('c.id as chat_id', 'c.name as user_name', 'c.phone as phone', 'sl.store_name as store_location', 'c.question as question', 'c.created_at', 'c.status as chat_status')
+                ->select('c.id as chat_id', 'c.name as user_name', 'c.phone as phone', 
+                'sl.store_name as store_location', 'c.question as question', 'c.created_at', 
+                'c.status as chat_status', 'c.user_id', 'c.accepted_user_id')
                 ->where('c.id', $chat_id)
                 ->join('store_locations as sl', 'sl.id', '=', 'c.store_location_id')                
-                ->get();
+                ->first();
         return $data;
     }
 
@@ -147,14 +149,25 @@ class Api extends Model{
     //post chat messages
     public static function postChatMessagesAppln($input = array()){
         $sender_id = self::getUserID($input['device_id']);
-        $receiver_id = 
+        $chat_data = self::getChatDetails($input['chat_id']);
+        //dd($chat_data);
+        if($sender_id == $chat_data->user_id){
+            $receiver_id = $chat_data->accepted_user_id;
+        } else if($sender_id == $chat_data->accepted_user_id){
+            $receiver_id = $chat_data->user_id;
+        }
         $msg_data = array(  
             "chat_id"       => $input['chat_id'],
             "sender_id"     => $sender_id,
             "receiver_id"   => $receiver_id,
-            "created_at"    => date("Y-m-d H:i:s")
-            
+            "message"       => $input['message'],
+            "media_file"    => $input['media_file'],
+            "created_at"    => date("Y-m-d H:i:s")            
         );
+
+        DB::table('messages')->insert($msg_data);
+        return true;
+
     }
 
     //get user_id from device_id
