@@ -23,9 +23,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('get-quote/add', "ApiController@addGetQuoteAppln");           // Post "get a quote"
         $router->post('auth/login', 'AuthController@postLogin');                    // Admin login
         $router->post('device/register', 'ApiController@postRegisterDevice');       // Register devices once app init
+        
         $router->post('chat/start', 'ApiController@postChatAssociate');             // Submit "chat with associate" (chat init) 
+        $router->get('chat/details/{chat_id}', 'ApiController@getChatDetails');     // Get chat details by chat ID        
+        $router->post('chat/accept', 'ApiController@acceptChatAppln');              // accept chat by admin
+        $router->post('chat/messages/send', 'ApiController@postChatMessages');      // post chat messages into server
 
-        $router->post('pushnotif/test', 'ApiController@sendPushNotification_TEST');
+        $router->post('pushnotif/test', 'ApiController@sendPushNotification_TEST'); // test push notification
 
     //});
 });

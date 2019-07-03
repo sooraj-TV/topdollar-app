@@ -109,4 +109,65 @@ class Api extends Model{
         return $data;
         
     }
+
+    //get chat details from chat-id
+    public static function getChatDetails($chat_id = ""){
+        $data = DB::table("chats as c")
+                ->select('c.id as chat_id', 'c.name as user_name', 'c.phone as phone', 'sl.store_name as store_location', 'c.question as question', 'c.created_at', 'c.status as chat_status')
+                ->where('c.id', $chat_id)
+                ->join('store_locations as sl', 'sl.id', '=', 'c.store_location_id')                
+                ->get();
+        return $data;
+    }
+
+    //accept/reject chat by admin
+    public static function acceptChatAppln($input = array()){
+        $admin_id = self::getUserID($input['device_id']);
+        $data = array(
+            'accepted_user_id' => $admin_id,
+            'status'    => $input['status']
+        );
+
+        DB::table('chats')->where('id', $input['chat_id'])->update($data);
+
+        if($input['status'] == "accepted"){
+            $chat_data = DB::table('chats')->where('id', $input['chat_id'])->first();
+            $msg_data = array(
+                'chat_id'       => $input['chat_id'],
+                'sender_id'     => $chat_data->user_id,
+                'receiver_id'   => $admin_id,
+                'message'       => $chat_data->question,
+                'created_at'    => date("Y-m-d H:i:s")
+            );
+            DB::table('messages')->insert($msg_data);
+        }
+        return true;
+    }
+
+    //post chat messages
+    public static function postChatMessagesAppln($input = array()){
+        $sender_id = self::getUserID($input['device_id']);
+        $receiver_id = 
+        $msg_data = array(  
+            "chat_id"       => $input['chat_id'],
+            "sender_id"     => $sender_id,
+            "receiver_id"   => $receiver_id,
+            "created_at"    => date("Y-m-d H:i:s")
+            
+        );
+    }
+
+    //get user_id from device_id
+    public static function getUserID($device_id = ""){
+        if(!empty($device_id)){
+            $user_data = DB::table('users')->where('device_id', $device_id)->first(); // get userdata by device_id
+            if(!empty($user_data)){
+                return $user_data->id;
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
 }

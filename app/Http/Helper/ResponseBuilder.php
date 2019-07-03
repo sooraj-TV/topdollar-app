@@ -11,7 +11,7 @@ class ResponseBuilder {
     }
 
     //send push notification
-    public static function sendPushNotification($registraion_ids = array(), $message = ""){
+    public static function sendPushNotification($registraion_ids = array(), $data = array()){
 
         //API URL of FCM
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -21,10 +21,10 @@ class ResponseBuilder {
         $api_key = env('FIREBASE_KEY');
                     
         $fields = array (
-            'registration_ids' => $registraion_ids,
-            'data' => array (
-                    "message" => $message
-            )
+            'priority'          => 'high',
+            'content_available' => true,
+            'registration_ids'  => $registraion_ids,
+            'data'              => $data
         );
     
         //header includes Content type and api key
