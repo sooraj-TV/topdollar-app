@@ -114,8 +114,9 @@ class ApiController extends Controller
         //$input = $request->all();        
         //echo "Chatid: ".$chat_id; exit;
         if(!empty($chat_id)){
-            $chat_details = Api::getChatDetails($chat_id);                
-            if(sizeof($chat_details)){                
+            $chat_details = Api::getChatDetails($chat_id);  
+            //dd($chat_details);               
+            if(!empty($chat_details)){                
                 return ResponseBuilder::result(200, 'success', $chat_details); 
             } else{
                 return ResponseBuilder::result(404, 'record_not_found'); 
@@ -145,16 +146,24 @@ class ApiController extends Controller
         $input = $request->all();
         if(!empty($input)){
             $input['media_file'] = "";
-            if(!empty($input['media_file'])){ // optional - chat image 
-                $image = $request->file('media_file');
+            $chat_file_url = "";
+            if(!empty($input['chat_file'])){ // optional - chat image 
+                //print_r($input['chat_file']);
+                $image = $request->file('chat_file');
                 $name = $image->getClientOriginalName();
-                if($image->move('public/chat-images/', $name)){
-                    $input['media_file'] = $name;
-                }        
+                $image->move('public/chat-images/', $name);  
+                $input['media_file'] = $name;        
+                $chat_file_url = url('public/chat-images/'.$name);
+                $chat_file_url = str_replace('/index.php','',$chat_file_url);
             }            
             $res = Api::postChatMessagesAppln($input);
+            
+            $chat_data = array(
+                'message' => $input['message'],
+                'chat_media_url' => $chat_file_url
+            );
             if($res){
-                return ResponseBuilder::result(200, 'success'); 
+                return ResponseBuilder::result(200, 'success',$chat_data); 
             } else {
                 return ResponseBuilder::result(500, 'error'); 
             }
@@ -162,6 +171,25 @@ class ApiController extends Controller
             return ResponseBuilder::result(204, 'no_input_content');
         }
 
+    }
+
+    public function getChatMessages($chat_id = ""){
+        
+        if(!empty($chat_id)){
+            $msg_data = array(
+                "chat_data" => Api::getChatDetails($chat_id),
+                "messages" => Api::getMessages($chat_id)   
+            );         
+            //dd($msg_data);    
+            if(!empty($msg_data)){                
+                return ResponseBuilder::result(200, 'success', $msg_data); 
+            } else{
+                return ResponseBuilder::result(404, 'record_not_found'); 
+            }
+              
+        } else {
+            return ResponseBuilder::result(500, 'empty_chatid');    
+        }
     }
 
     //send test push notification
