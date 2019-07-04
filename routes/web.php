@@ -28,6 +28,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('chat/details/{chat_id}', 'ApiController@getChatDetails');     // Get chat details by chat ID        
         $router->post('chat/accept', 'ApiController@acceptChatAppln');              // accept chat by admin
         $router->post('chat/messages/send', 'ApiController@postChatMessages');      // post chat messages into server
+        $router->get('chat/messages/{chat_id}', 'ApiController@getChatMessages');   // get chat messages from server
 
         $router->post('pushnotif/test', 'ApiController@sendPushNotification_TEST'); // test push notification
 

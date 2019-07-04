@@ -183,4 +183,24 @@ class Api extends Model{
             return "";
         }
     }
+
+
+    public static function getMessages($chat_id = ""){
+        $url = str_replace('/index.php','',url(''));        
+        if(!empty($chat_id)){
+            $messages = DB::table('messages as m')
+                        ->select("m.message", //DB::raw('CONCAT("'.$url.'/public/chat-images/",m.media_file) as chat_file'),
+                            DB::raw('IF (m.media_file = "", "", CONCAT("'.$url.'/public/chat-images/",m.media_file)) as media_file'),
+                            "sender.name as sender_name", "receiver.name as receiver_name", "sender.device_id as sender_device_id",
+                            "receiver.device_id as receiver_device_id"
+                        )
+                        ->leftJoin('users as sender', 'sender.id', '=', 'm.sender_id')
+                        ->leftJoin('users as receiver', 'receiver.id', '=', 'm.receiver_id')
+                        ->where('m.chat_id', $chat_id)
+                        ->get(); 
+            return $messages;
+        } else {
+            return "";
+        }
+    }
 }
