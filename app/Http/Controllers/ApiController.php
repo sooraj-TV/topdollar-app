@@ -161,6 +161,9 @@ class ApiController extends Controller
         if(!empty($input)){
             $chat_details = Api::getChatDetails($input['chat_id']);
             //dd($chat_details);
+            if(empty($chat_details)){
+                return ResponseBuilder::result(500,'chat_not_found');
+            }
             if($chat_details->chat_status == "accepted"){
                 $input['media_file'] = "";
                 $chat_file_url = "";

@@ -46,7 +46,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        // 404 page when a model is not found
+        //dd($e);
+        //404 page when a model is not found
         // if ($e instanceof HttpException) {
         //     return ResponseBuilder::result(404,'not_found');
         // }
