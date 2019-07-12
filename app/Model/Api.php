@@ -74,6 +74,8 @@ class Api extends Model{
         //$res = array();
         $user_data = DB::table('users')->where('device_id', $input['device_id'])->first(); // get userdata by device_id
         $user_id = $user_data->id;
+
+        isset($input['quote_id']) ? $quote_id = $input['quote_id'] : $quote_id = 0;
         
         $chat_data = array(            
             'user_id'           => $user_id,
@@ -81,13 +83,11 @@ class Api extends Model{
             'phone'             => $input['phone'],
             'store_location_id' => $input['store_location_id'],
             'question'          => $input['question'],
+            'quote_id'          => $quote_id,
             'created_at'        => date("Y-m-d H:i:s")         
         );  
         //insert chat details in conversation table- init
         $chat_id = DB::table('chats')->insertGetId($chat_data);
-
-        // $msg_data = array(
-        // );
         
         //update user table with below details
         DB::table('users')->where('id', $user_id)->update([
@@ -184,7 +184,7 @@ class Api extends Model{
         }
     }
 
-
+    //Get messages by chat id
     public static function getMessages($chat_id = ""){
         $url = str_replace('/index.php','',url(''));        
         if(!empty($chat_id)){
@@ -192,7 +192,7 @@ class Api extends Model{
                         ->select("m.message", //DB::raw('CONCAT("'.$url.'/public/chat-images/",m.media_file) as chat_file'),
                             DB::raw('IF (m.media_file = "", "", CONCAT("'.$url.'/public/chat-images/",m.media_file)) as media_file'),
                             "sender.name as sender_name", "receiver.name as receiver_name", "sender.device_id as sender_device_id",
-                            "receiver.device_id as receiver_device_id"
+                            "receiver.device_id as receiver_device_id", "m.created_at"
                         )
                         ->leftJoin('users as sender', 'sender.id', '=', 'm.sender_id')
                         ->leftJoin('users as receiver', 'receiver.id', '=', 'm.receiver_id')
@@ -202,5 +202,17 @@ class Api extends Model{
         } else {
             return "";
         }
+    }
+
+    //get chat list for admin
+    public static function getChatLists($device_id = ""){
+
+        // if(!empty($device_id)){
+        //     $chats = DB::table("chats as c")
+        //              ->join("")
+        // } else {
+        //     return "";
+        // }
+
     }
 }

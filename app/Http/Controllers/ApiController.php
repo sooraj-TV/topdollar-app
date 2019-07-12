@@ -58,7 +58,20 @@ class ApiController extends Controller
                         Api::addQuoteImageAppln($quote_image_data);
                     }         
                 }
-                return ResponseBuilder::result(200, 'success'); // return success message if the contents stores in DB    
+                //insert quote data to chat table and return chat_id
+                $chat_data = array(
+                    'name'              => $input['name'],
+                    'phone'             => $input['phone'],
+                    'store_location_id' => $input['store_location_id'],
+                    'question'          => $input['description'],
+                    'device_id'         => $input['device_id'],
+                    'quote_id'          => $quote_id
+                );
+                $chat_id = Api::postChatAssociateAppln($chat_data);
+                $res_data = array(
+                    'chat_id' => $chat_id
+                );
+                return ResponseBuilder::result(200, 'success', $res_data); // return success message if the contents stores in DB    
             }
             else{
                 return ResponseBuilder::result(500, 'error');    
@@ -92,11 +105,12 @@ class ApiController extends Controller
                 $admin_tokens[] = $admin->device_token;
             }
             //dd($admin_tokens);
-            $message = "Chat request from a user: ".$input['name'];
-            $push_data = array (
-                "message" => $message,
+            $message = "Chat request from a user: ".$input['name'];            
+            $push_data = array(
+                'title' => "Chat request",
+                'message' => $message,
                 "chat_id" => $chat_id
-            );
+            ); 
             ResponseBuilder::sendPushNotification($admin_tokens, $push_data);
             
             $data = array(
@@ -145,27 +159,33 @@ class ApiController extends Controller
     public function postChatMessages(Request $request){
         $input = $request->all();
         if(!empty($input)){
-            $input['media_file'] = "";
-            $chat_file_url = "";
-            if(!empty($input['chat_file'])){ // optional - chat image 
-                //print_r($input['chat_file']);
-                $image = $request->file('chat_file');
-                $name = $image->getClientOriginalName();
-                $image->move('public/chat-images/', $name);  
-                $input['media_file'] = $name;        
-                $chat_file_url = url('public/chat-images/'.$name);
-                $chat_file_url = str_replace('/index.php','',$chat_file_url);
-            }            
-            $res = Api::postChatMessagesAppln($input);
-            
-            $chat_data = array(
-                'message' => $input['message'],
-                'chat_media_url' => $chat_file_url
-            );
-            if($res){
-                return ResponseBuilder::result(200, 'success',$chat_data); 
-            } else {
-                return ResponseBuilder::result(500, 'error'); 
+            $chat_details = Api::getChatDetails($input['chat_id']);
+            //dd($chat_details);
+            if($chat_details->chat_status == "accepted"){
+                $input['media_file'] = "";
+                $chat_file_url = "";
+                if(!empty($input['chat_file'])){ // optional - chat image 
+                    //print_r($input['chat_file']);
+                    $image = $request->file('chat_file');
+                    $name = $image->getClientOriginalName();
+                    $image->move('public/chat-images/', $name);  
+                    $input['media_file'] = $name;        
+                    $chat_file_url = url('public/chat-images/'.$name);
+                    $chat_file_url = str_replace('/index.php','',$chat_file_url);
+                }            
+                $res = Api::postChatMessagesAppln($input);
+                
+                $chat_data = array(
+                    'message' => $input['message'],
+                    'chat_media_url' => $chat_file_url
+                );
+                if($res){
+                    return ResponseBuilder::result(200, 'success',$chat_data); 
+                } else {
+                    return ResponseBuilder::result(500, 'error'); 
+                }
+            } else { // if chat is not accepted
+                return ResponseBuilder::result(500, 'error', array("message"=> "Sorry! This chat is not accepted yet."));
             }
         } else {
             return ResponseBuilder::result(204, 'no_input_content');
@@ -192,14 +212,30 @@ class ApiController extends Controller
         }
     }
 
+    public function getChatLists($device_id = ""){
+        if(!empty($device_id)){
+            $chat_list = Api::getChatLists($device_id);         
+            //dd($msg_data);    
+            if(!empty($chat_list)){                
+                return ResponseBuilder::result(200, 'success', $chat_list); 
+            } else{
+                return ResponseBuilder::result(404, 'record_not_found'); 
+            }
+              
+        } else {
+            return ResponseBuilder::result(500, 'empty_chatid');    
+        }
+    }
+
     //send test push notification
     public function sendPushNotification_TEST(Request $request){
         $input = $request->all();
-        $device_tokens [] = $input['device_token'];    
+        $device_tokens[] = $input['device_token'];    
         $push_data = array(
+            'title' => "Hello Test!",
             'message' => $input['message']
         ); 
-        return ResponseBuilder::sendPushNotification($device_tokens, $push_data);        
+        return ResponseBuilder::sendPushNotificationTEST($device_tokens, $push_data);        
 
     }
 
