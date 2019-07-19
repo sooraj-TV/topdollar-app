@@ -2,6 +2,7 @@
 namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Http\Helper\ResponseBuilder;
 
 class Api extends Model{
 
@@ -70,6 +71,16 @@ class Api extends Model{
         return true;
     }
 
+    // Update device id and device token - for admin
+    public static function updateDeviceDetails($input = array()){
+        $data = array(
+            'device_id' => $input['device_id'],
+            'device_token' => $input['device_token']
+        );
+        DB::table('users')->where('id', $input['user_id'])->update($data);                
+        return true;
+    }
+
     public static function postChatAssociateAppln($input = array()){
         //$res = array();
         $user_data = DB::table('users')->where('device_id', $input['device_id'])->first(); // get userdata by device_id
@@ -124,7 +135,11 @@ class Api extends Model{
 
     //accept/reject chat by admin
     public static function acceptChatAppln($input = array()){
-        $admin_id = self::getUserID($input['device_id']);
+        if($input['user_id'] > 0){
+            $admin_id = $input['user_id'];
+        } else {
+            $admin_id = self::getUserID($input['device_id']);
+        }
         $data = array(
             'accepted_user_id' => $admin_id,
             'status'    => $input['status']
@@ -148,7 +163,11 @@ class Api extends Model{
 
     //post chat messages
     public static function postChatMessagesAppln($input = array()){
-        $sender_id = self::getUserID($input['device_id']);
+        if($input['user_id'] > 0){
+            $sender_id = $input['user_id'];
+        } else {
+            $sender_id = self::getUserID($input['device_id']);
+        }        
         $chat_data = self::getChatDetails($input['chat_id']);
         //dd($chat_data);
         if($sender_id == $chat_data->user_id){
@@ -156,6 +175,10 @@ class Api extends Model{
         } else if($sender_id == $chat_data->accepted_user_id){
             $receiver_id = $chat_data->user_id;
         }
+        
+        $user_data = DB::table('users')->where('id', $receiver_id)->first();
+        $device_token[] = $user_data->device_token;
+
         $msg_data = array(  
             "chat_id"       => $input['chat_id'],
             "sender_id"     => $sender_id,
@@ -166,6 +189,16 @@ class Api extends Model{
         );
 
         DB::table('messages')->insert($msg_data);
+        // ---------- send push notification  -----------
+        $data = array(
+            'chat_id' => $input['chat_id']
+        );
+        $notification = array(
+            "title" => "New message",
+            "body"  => $input['message']            
+        );
+        ResponseBuilder::sendPushNotification($device_token, $notification, $data); 
+        // ---------- send push notification  -----------
         return true;
 
     }
@@ -192,7 +225,7 @@ class Api extends Model{
                         ->select("m.message", //DB::raw('CONCAT("'.$url.'/public/chat-images/",m.media_file) as chat_file'),
                             DB::raw('IF (m.media_file = "", "", CONCAT("'.$url.'/public/chat-images/",m.media_file)) as media_file'),
                             "sender.name as sender_name", "receiver.name as receiver_name", "sender.device_id as sender_device_id",
-                            "receiver.device_id as receiver_device_id", "m.created_at"
+                            "receiver.device_id as receiver_device_id", "m.sender_id", "m.receiver_id", "m.created_at"
                         )
                         ->leftJoin('users as sender', 'sender.id', '=', 'm.sender_id')
                         ->leftJoin('users as receiver', 'receiver.id', '=', 'm.receiver_id')
@@ -205,14 +238,22 @@ class Api extends Model{
     }
 
     //get chat list for admin
-    public static function getChatLists($device_id = ""){
+    public static function getChatLists($user_id = ""){        
+        $chats = DB::table("chats as c")
+                 ->select('c.id as chat_id', 'c.name as user_name', 'c.question', 'c.created_at', 'c.status');
+        if(!empty($user_id)){
+            $chats = $chats->where('c.accepted_user_id', $user_id);                                 
+        } 
+        $chats = $chats->get();
+        return $chats;
+    }
 
-        // if(!empty($device_id)){
-        //     $chats = DB::table("chats as c")
-        //              ->join("")
-        // } else {
-        //     return "";
-        // }
-
+    //get chat list for admin
+    public static function getChatRequests(){        
+        $chats = DB::table("chats as c")
+                 ->select('c.id as chat_id', 'c.name as user_name', 'c.question', 'c.created_at', 'c.status')
+                 ->where('c.status', '!=', 'closed')
+                 ->get();
+        return $chats;
     }
 }

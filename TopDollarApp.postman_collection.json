@@ -6,6 +6,507 @@
 	},
 	"item": [
 		{
+			"name": "LIVE",
+			"item": [
+				{
+					"name": "GetStoreLocation - LIVE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/store-location/list",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"store-location",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategories - LIVE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/categories/list",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"categories",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChatDetails - LIVE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/chat/details/3",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"chat",
+								"details",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChatList - LIVE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/chat/list/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"projects",
+								"top-dollar",
+								"topdollar-app",
+								"api",
+								"chat",
+								"list",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChatRequests - LIVE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/chat/requests",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"chat",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChatMessages - LIVE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/chat/messages/3",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"chat",
+								"messages",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddQuote - LIVE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Thenew",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "898989898987",
+									"type": "text"
+								},
+								{
+									"key": "store_name",
+									"value": "kollam",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "category_name",
+									"value": "Laptop",
+									"type": "text"
+								},
+								{
+									"key": "model_number",
+									"value": "889M",
+									"type": "text"
+								},
+								{
+									"key": "brand",
+									"value": "Zbrand",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "op tt thsi is he ede",
+									"type": "text"
+								},
+								{
+									"key": "device_id",
+									"value": "aUUY-8999iii-898jasa",
+									"type": "text"
+								},
+								{
+									"key": "quote_images[]",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "store_location_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/get-quote/add",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"get-quote",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SendChatMessage - LIVE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_id",
+									"value": "AEAA01B3-FC6C-4B40-86C6-E34D42120D55",
+									"type": "text"
+								},
+								{
+									"key": "chat_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Hello 345554",
+									"type": "text"
+								},
+								{
+									"key": "media_file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/messages/send",
+							"protocol": "http",
+							"host": [
+								"php",
+								"techversantinfotech",
+								"com"
+							],
+							"path": [
+								"topdollerpawn",
+								"index.php",
+								"api",
+								"chat",
+								"messages",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChatStart - LIVE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_id",
+									"value": "aUUY-8999iii-898jasa",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Sooraj",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "898989893",
+									"type": "text"
+								},
+								{
+									"key": "store_location_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "question",
+									"value": "Hello, I want to know the price",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/chat/start",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"chat",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login - LIVE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "sooraj.v@topdollar.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "srj123",
+									"type": "text"
+								},
+								{
+									"key": "device_id",
+									"value": "asdasd",
+									"type": "text"
+								},
+								{
+									"key": "device_token",
+									"value": "aasdasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeviceRegister - LIVE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_id",
+									"value": "aUUY-8999iii-898jasa",
+									"type": "text"
+								},
+								{
+									"key": "device_token",
+									"value": "a787huys8ssuwwwwssuemlw90wsw08sxxssxj88w9sko",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/device/register",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"device",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AcceptChat - LIVE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_id",
+									"value": "652CE858-BB2C-4D3D-9268-E76845C298F5",
+									"type": "text"
+								},
+								{
+									"key": "chat_id",
+									"value": "21",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "accepted",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://topdollarjewelry.com/tdp-app/index.php/api/chat/accept",
+							"protocol": "https",
+							"host": [
+								"topdollarjewelry",
+								"com"
+							],
+							"path": [
+								"tdp-app",
+								"index.php",
+								"api",
+								"chat",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pushnotification TEST - local Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "device_token",
+									"value": "cOT-Zb7mNEk:APA91bEDcy9kumCCRCM6kArle8YLhmiYWllXy8fp-YwKJ8C3AuF1Rfi29jIeMbPiiJcbe7PJclWpzBCA8mGkSlKgNmrICDz69-kdr815eNmHQKKtI8nTWQMTggm6BEPOoiRcjU_w9uf8",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "test message - ios - try9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/pushnotif/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"projects",
+								"top-dollar",
+								"topdollar-app",
+								"api",
+								"pushnotif",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "GetStoreLocation - Local",
 			"request": {
 				"method": "GET",
@@ -21,6 +522,30 @@
 						"projects",
 						"top-dollar",
 						"topdollar-app",
+						"api",
+						"store-location",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStoreLocation - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/store-location/list",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
 						"api",
 						"store-location",
 						"list"
@@ -54,7 +579,398 @@
 			"response": []
 		},
 		{
+			"name": "GetCategories - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/details/21",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"chat",
+						"details",
+						"21"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatDetails - Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/chat/details/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"chat",
+						"details",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatDetails - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/details/3",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"chat",
+						"details",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatList - Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/chat/list/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"chat",
+						"list",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatList - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/list/3",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"chat",
+						"list",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatRequests - Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/chat/requests",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"chat",
+						"requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatRequests - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/requests",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"chat",
+						"requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatMessages - Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/chat/messages/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"chat",
+						"messages",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetChatMessages - DEV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/messages/21",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"chat",
+						"messages",
+						"21"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "AddQuote - Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Rajin",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "89998999887",
+							"type": "text"
+						},
+						{
+							"key": "store_name",
+							"value": "Both",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "category_name",
+							"value": "Test",
+							"type": "text"
+						},
+						{
+							"key": "model_number",
+							"value": "89yyu",
+							"type": "text"
+						},
+						{
+							"key": "brand",
+							"value": "Bnio",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "The descttd dopuyb jjs",
+							"type": "text"
+						},
+						{
+							"key": "quote_images[]",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "device_id",
+							"value": "aUUY-8999iii-898jasa",
+							"type": "text"
+						},
+						{
+							"key": "store_location_id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/get-quote/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"get-quote",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddQuote - DEV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "charil",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "898989898987",
+							"type": "text"
+						},
+						{
+							"key": "store_name",
+							"value": "kollam",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "category_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "model_number",
+							"value": "889M",
+							"type": "text"
+						},
+						{
+							"key": "brand",
+							"value": "Zbrand",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "op tt thsi is he ede",
+							"type": "text"
+						},
+						{
+							"key": "device_id",
+							"value": "6766asdasdas6asds",
+							"type": "text"
+						},
+						{
+							"key": "quote_images[]",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "store_location_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/get-quote/add",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"get-quote",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SendChatMessage - Local",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -138,7 +1054,7 @@
 			"response": []
 		},
 		{
-			"name": "Login-Local",
+			"name": "SendChatMessage - DEV",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -146,38 +1062,49 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "email",
-							"value": "sooraj.v@topdollar.com",
+							"key": "device_id",
+							"value": "AEAA01B3-FC6C-4B40-86C6-E34D42120D55",
 							"type": "text"
 						},
 						{
-							"key": "password",
-							"value": "srj12333",
+							"key": "chat_id",
+							"value": "3",
 							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "Hello 345554",
+							"type": "text"
+						},
+						{
+							"key": "media_file",
+							"type": "file",
+							"src": "/C:/Users/Sooraj V/Pictures/test.png"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/login",
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/messages/send",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"php",
+						"techversantinfotech",
+						"com"
 					],
-					"port": "8080",
 					"path": [
-						"projects",
-						"top-dollar",
-						"topdollar-app",
+						"topdollerpawn",
+						"index.php",
 						"api",
-						"auth",
-						"login"
+						"chat",
+						"messages",
+						"send"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AddQuote - DEV",
+			"name": "ChatStart - Local",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -225,31 +1152,33 @@
 							"type": "text"
 						},
 						{
-							"key": "device_id",
-							"value": "adyg6hskmkl&2skolou09ss6sbbsh223",
-							"type": "text"
-						},
-						{
 							"key": "quote_images[]",
 							"type": "file",
 							"src": [
+								"/C:/Users/Sooraj V/Pictures/02-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-IN.jpg",
 								"/C:/Users/Sooraj V/Pictures/03-may-OUT.jpg",
 								"/C:/Users/Sooraj V/Pictures/06-may-IN.jpg"
 							]
+						},
+						{
+							"key": "device_id",
+							"value": "adyg6hskmkl&2skolou09ss6sbbsh223",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/get-quote/add",
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/get-quote/add",
 					"protocol": "http",
 					"host": [
-						"php",
-						"techversantinfotech",
-						"com"
+						"localhost"
 					],
+					"port": "8080",
 					"path": [
-						"topdollerpawn",
-						"index.php",
+						"projects",
+						"top-dollar",
+						"topdollar-app",
 						"api",
 						"get-quote",
 						"add"
@@ -259,12 +1188,67 @@
 			"response": []
 		},
 		{
-			"name": "GetCategories - DEV",
+			"name": "ChatStart - DEV",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Sooraj",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "898989898987",
+							"type": "text"
+						},
+						{
+							"key": "store_name",
+							"value": "kollam",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "category_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "model_number",
+							"value": "889M",
+							"type": "text"
+						},
+						{
+							"key": "brand",
+							"value": "Zbrand",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Ths is the decsription fo the university amenju",
+							"type": "text"
+						},
+						{
+							"key": "quote_images[]",
+							"type": "file",
+							"src": [
+								"/C:/Users/Sooraj V/Pictures/02-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-IN.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/06-may-IN.jpg"
+							]
+						}
+					]
+				},
 				"url": {
-					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/categories/list",
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/start",
 					"protocol": "http",
 					"host": [
 						"php",
@@ -275,20 +1259,74 @@
 						"topdollerpawn",
 						"index.php",
 						"api",
-						"categories",
-						"list"
+						"chat",
+						"start"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GetStoreLocation - DEV",
+			"name": "Login - Local",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj.v@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj123",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/store-location/list",
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login - DEV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj.v@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj12333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/auth/login",
 					"protocol": "http",
 					"host": [
 						"php",
@@ -299,8 +1337,372 @@
 						"topdollerpawn",
 						"index.php",
 						"api",
-						"store-location",
-						"list"
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register - Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj123",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Sooraj",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeviceRegister - Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj.v@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj12333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeviceRegister - DEV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj.v@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj12333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AcceptChat - Local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "sooraj.v@topdollar.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "srj12333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AcceptChat - DEV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Sooraj",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "898989898987",
+							"type": "text"
+						},
+						{
+							"key": "store_name",
+							"value": "kollam",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "category_name",
+							"value": "Laptop",
+							"type": "text"
+						},
+						{
+							"key": "model_number",
+							"value": "889M",
+							"type": "text"
+						},
+						{
+							"key": "brand",
+							"value": "Zbrand",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Ths is the decsription fo the university amenju",
+							"type": "text"
+						},
+						{
+							"key": "quote_images[]",
+							"type": "file",
+							"src": [
+								"/C:/Users/Sooraj V/Pictures/02-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-IN.jpg",
+								"/C:/Users/Sooraj V/Pictures/03-may-OUT.jpg",
+								"/C:/Users/Sooraj V/Pictures/06-may-IN.jpg"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/chat/start",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"chat",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pushnotification TEST - local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "device_token",
+							"value": "cOT-Zb7mNEk:APA91bEDcy9kumCCRCM6kArle8YLhmiYWllXy8fp-YwKJ8C3AuF1Rfi29jIeMbPiiJcbe7PJclWpzBCA8mGkSlKgNmrICDz69-kdr815eNmHQKKtI8nTWQMTggm6BEPOoiRcjU_w9uf8",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "test message - ios - try9",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/pushnotif/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"pushnotif",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pushnotification TEST - DEV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "device_token",
+							"value": "frJKSAVmYkE:APA91bGSZSgPY2OQwhRUgu9BVHbOvAIM8QBGG8yIJd4YWZVPy2t8DWH_Y1qnbP5g3IzQwTo6zllrhIIGcqZM4gqlBmmmsMhRkMZvFF0HfTYiVmIsNt2DSkcHR-gugrnPBhGnQ-NbaIIG",
+							"type": "text"
+						},
+						{
+							"key": "message",
+							"value": "test message - android -try1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://php.techversantinfotech.com/topdollerpawn/index.php/api/pushnotif/test",
+					"protocol": "http",
+					"host": [
+						"php",
+						"techversantinfotech",
+						"com"
+					],
+					"path": [
+						"topdollerpawn",
+						"index.php",
+						"api",
+						"pushnotif",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AuthCheck TEST - local",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODA4MFwvcHJvamVjdHNcL3RvcC1kb2xsYXJcL3RvcGRvbGxhci1hcHBcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1NjM0MzM4MDEsImV4cCI6MTU2MzQzNzQwMSwibmJmIjoxNTYzNDMzODAxLCJqdGkiOiJja0pVckNwQ1praFN6QnN5Iiwic3ViIjo1LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.-x7P2fkQUbA9YkT4ZZkaEch-uV3LsO2UIy0R3RWQ7FE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/projects/top-dollar/topdollar-app/api/auth/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"projects",
+						"top-dollar",
+						"topdollar-app",
+						"api",
+						"auth",
+						"check"
 					]
 				}
 			},

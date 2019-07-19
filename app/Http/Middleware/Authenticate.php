@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use App\Http\Helper\ResponseBuilder;
+use Tymon\JWTAuth\JWTAuth;
 
 class Authenticate
 {
@@ -20,9 +22,10 @@ class Authenticate
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
-    public function __construct(Auth $auth)
+    public function __construct(Auth $auth, JWTAuth $jwt)
     {
         $this->auth = $auth;
+        $this->jwt = $jwt;
     }
 
     /**
@@ -34,9 +37,16 @@ class Authenticate
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
-    {
+    {     
+        
+        //$user = $this->jwt->User();
+        $user = $this->jwt->user();
+        //dd($user);
+        echo $this->jwt->user()->id;
+        
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            //return response('Unauthorized.', 401);
+            return ResponseBuilder::result(401,'unauthorized_access');
         }
 
         return $next($request);

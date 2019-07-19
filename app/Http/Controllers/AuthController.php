@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
 use App\Http\Helper\ResponseBuilder;
+use Illuminate\Support\Facades\Validator;
+use App\User;
+use Illuminate\Support\Facades\Hash;
+use App\Model\Api;
 
 class AuthController extends Controller
 {
@@ -20,7 +24,8 @@ class AuthController extends Controller
     }
 
     public function postLogin(Request $request)
-    {        
+    {  
+        $input = $request->all();
         $this->validate($request, [
             'email'    => 'required|email|max:255',
             'password' => 'required',
@@ -55,7 +60,42 @@ class AuthController extends Controller
         }
 
         //return response()->json(compact('token'));
-        $data = array('token' => $token);
+        //echo $this->jwt->user()->id; exit;
+        $data = array(
+            'token'     => $token,
+            'user_id'   => $this->jwt->user()->id
+        );
+        $update_data = array(
+            'device_id' => $input['device_id'],
+            'device_token' => $input['device_token'],
+            'user_id'   => $this->jwt->user()->id
+        );
+        Api::updateDeviceDetails($update_data);
         return ResponseBuilder::result(200,"success",$data);
+    }
+
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+        //echo Hash::make($request->post('password')); exit;
+        if($validator->fails()){
+                //return response()->json($validator->errors()->toJson(), 400);
+                return ResponseBuilder::result(400, $validator->errors());
+        }
+        
+        $user = User::create([
+            'name' => $request->post('name'),
+            'email' => $request->post('email'),
+            'password' => Hash::make($request->post('password')),
+        ]);
+
+        $token = $this->jwt->fromUser($user);
+
+        return response()->json(compact('user','token'),201);
     }
 }

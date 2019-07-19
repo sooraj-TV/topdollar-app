@@ -106,16 +106,14 @@ class ApiController extends Controller
             }
             //dd($admin_tokens);
             $message = "Chat request from a user: ".$input['name'];            
-            $push_data = array(
-                'title' => "Chat request",
-                'message' => $message,
-                "chat_id" => $chat_id
-            ); 
-            ResponseBuilder::sendPushNotification($admin_tokens, $push_data);
-            
             $data = array(
                 'chat_id' => $chat_id
             );
+            $notification = array(
+                "title" => "Chat Request",
+                "body"  => $message            
+            );
+            ResponseBuilder::sendPushNotification($admin_tokens, $notification, $data);                        
             return ResponseBuilder::result(200, 'success', $data);   
         }
         else{
@@ -162,7 +160,7 @@ class ApiController extends Controller
             $chat_details = Api::getChatDetails($input['chat_id']);
             //dd($chat_details);
             if(empty($chat_details)){
-                return ResponseBuilder::result(500,'chat_not_found');
+                return ResponseBuilder::result(404,'chat_not_found');
             }
             if($chat_details->chat_status == "accepted"){
                 $input['media_file'] = "";
@@ -215,10 +213,11 @@ class ApiController extends Controller
         }
     }
 
-    public function getChatLists($device_id = ""){
-        if(!empty($device_id)){
-            $chat_list = Api::getChatLists($device_id);         
-            //dd($msg_data);    
+    //Get chat list for admin
+    public function getChatLists($user_id = ""){
+        if(!empty($user_id)){
+            $chat_list = Api::getChatLists($user_id);         
+            //dd($chat_list);    
             if(!empty($chat_list)){                
                 return ResponseBuilder::result(200, 'success', $chat_list); 
             } else{
@@ -230,15 +229,35 @@ class ApiController extends Controller
         }
     }
 
+    //Get all chat requests for admin
+    public function getChatRequests(){    
+        $chat_list = Api::getChatRequests();          
+        if(!empty($chat_list)){                
+            return ResponseBuilder::result(200, 'success', $chat_list); 
+        } else {
+            return ResponseBuilder::result(404, 'record_not_found'); 
+        }
+                      
+    }    
+
+
+
+    //********************* TEST CONTROLLERS ************************/
+    //test middleware auth check
+    public function authCheck(){
+        echo "Hello! Success";        
+    }
+
     //send test push notification
     public function sendPushNotification_TEST(Request $request){
         $input = $request->all();
         $device_tokens[] = $input['device_token'];    
-        $push_data = array(
-            'title' => "Hello Test!",
-            'message' => $input['message']
-        ); 
-        return ResponseBuilder::sendPushNotificationTEST($device_tokens, $push_data);        
+        $notification = array(
+            "title" => "Hello!",
+            "body"  => $input['message']            
+        );
+        $data = $notification;
+        return ResponseBuilder::sendPushNotificationTEST($device_tokens, $notification, $data);        
 
     }
 

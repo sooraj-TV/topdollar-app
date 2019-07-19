@@ -11,7 +11,7 @@ class ResponseBuilder {
     }
 
     //send push notification
-    public static function sendPushNotification($registraion_ids = array(), $data = array()){
+    public static function sendPushNotification($registration_ids = array(), $notification = array(), $data = array()){
 
         //API URL of FCM
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -21,13 +21,10 @@ class ResponseBuilder {
         $api_key = env('FIREBASE_KEY');
                     
         $fields = array (
-            "registration_ids" => $registraion_ids,
+            "registration_ids" => $registration_ids,
             "priority"      => "high",
-            "notification"  => array(
-                "body"  => $data,
-                "title" => $data['title'],
-                "sound" => "default"
-            )
+            "notification"  => $notification,
+            "data"          => $data
         );
     
         //header includes Content type and api key
@@ -53,7 +50,7 @@ class ResponseBuilder {
     }
 
     //send push notification - TEST
-    public static function sendPushNotificationTEST($registraion_ids = array(), $data = array()){
+    public static function sendPushNotificationTEST($registration_ids = array(), $notification = array(), $data = array()){
 
         //API URL of FCM
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -63,13 +60,10 @@ class ResponseBuilder {
         $api_key = env('FIREBASE_KEY');
                     
         $fields = array (
-            "registration_ids" => $registraion_ids,
+            "registration_ids" => $registration_ids,
             "priority"      => "high",
-            "notification"  => array(
-                "body"  => $data,
-                "title" => $data['title'],
-                "sound" => "default"
-            )
+            "notification"  => $notification,
+            "data"          => $data
         );
     
         //header includes Content type and api key

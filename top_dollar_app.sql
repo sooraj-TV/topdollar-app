@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 20, 2019 at 12:25 PM
+-- Generation Time: Jul 18, 2019 at 09:29 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -12,11 +12,6 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `top_dollar_app`
@@ -49,6 +44,39 @@ INSERT INTO `categories` (`id`, `category`, `parent_id`, `status`) VALUES
 (5, 'Purse', 0, 1),
 (6, 'Computer', 0, 1),
 (7, 'Other', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chats`
+--
+
+DROP TABLE IF EXISTS `chats`;
+CREATE TABLE IF NOT EXISTS `chats` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `accepted_user_id` int(11) NOT NULL,
+  `name` varchar(55) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `store_location_id` int(11) NOT NULL,
+  `question` text NOT NULL,
+  `quote_id` int(11) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL ,
+  `status` varchar(30) NOT NULL DEFAULT 'initiated' COMMENT '1. initiated, 2. accepted, 3. closed',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `chats`
+--
+
+INSERT INTO `chats` (`id`, `user_id`, `accepted_user_id`, `name`, `phone`, `store_location_id`, `question`, `quote_id`, `created_at`, `status`) VALUES
+(3, 3, 4, 'Sooraj', '898989893', 1, 'Hello, I want to know the price ', 0, '2019-06-27 12:15:26', 'accepted'),
+(4, 3, 0, 'Sooraj', '898989893', 1, 'Hello, I want to know the price ', 0, '2019-06-27 12:16:03', 'initiated'),
+(5, 3, 0, 'Sooraj', '898989893', 1, 'Hello, I want to know the price ', 0, '2019-06-27 12:17:17', 'initiated'),
+(6, 3, 0, 'Rajin', '89998999887', 3, 'The descttd dopuyb jjs', 0, '2019-07-08 06:45:40', 'initiated'),
+(7, 3, 0, 'Karthik', '89998999887', 3, 'The descttd dopuyb jjs', 3, '2019-07-08 07:05:28', 'initiated'),
+(8, 3, 0, 'Karthik', '89998999887', 3, 'The descttd dopuyb jjs', 4, '2019-07-08 07:05:58', 'initiated');
 
 -- --------------------------------------------------------
 
@@ -104,6 +132,33 @@ INSERT INTO `filter_values` (`id`, `filter_id`, `filter_value`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `chat_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `media_file` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `chat_id`, `sender_id`, `receiver_id`, `message`, `media_file`, `created_at`) VALUES
+(1, 3, 3, 1, 'Hello, I want to know the price ', '', '2019-07-02 08:19:39'),
+(2, 3, 1, 3, 'Hello', '', '2019-07-03 10:10:37'),
+(3, 3, 1, 3, 'Hello 345554', '', '2019-07-03 10:32:42');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quotes`
 --
 
@@ -120,16 +175,18 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `brand` varchar(55) DEFAULT NULL,
   `description` text NOT NULL,
   `device_token` varchar(155) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime NOT NULL ,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `quotes`
 --
 
 INSERT INTO `quotes` (`id`, `name`, `phone`, `store_location`, `category_id`, `jewelry_type`, `metal_type`, `model_number`, `brand`, `description`, `device_token`, `created_at`) VALUES
-(1, 'Sooraj', '898989898987', 'kollam', 2, NULL, NULL, '889M', 'Zbrand', 'Ths is the decsription fo the university amenju', 'adyg6hskmkl&2skolou09ss6sbbsh223', '2019-06-20 05:48:42');
+(2, 'Rajin', '89998999887', 'Both', 1, NULL, NULL, '89yyu', 'Bnio', 'The descttd dopuyb jjs', 'aUUY-8999iii-898jasa', '2019-07-08 06:45:40'),
+(3, 'Karthik', '89998999887', 'Both', 1, NULL, NULL, '89yyu', 'Bnio', 'The descttd dopuyb jjs', 'aUUY-8999iii-898jasa', '2019-07-08 07:05:28'),
+(4, 'Karthik', '89998999887', 'Both', 1, NULL, NULL, '89yyu', 'Bnio', 'The descttd dopuyb jjs', 'aUUY-8999iii-898jasa', '2019-07-08 07:05:58');
 
 -- --------------------------------------------------------
 
@@ -143,17 +200,14 @@ CREATE TABLE IF NOT EXISTS `quote_images` (
   `quote_id` int(11) NOT NULL,
   `image_path` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `quote_images`
 --
 
 INSERT INTO `quote_images` (`id`, `quote_id`, `image_path`) VALUES
-(1, 1, '02-may-OUT.jpg'),
-(2, 1, '03-may-IN.jpg'),
-(3, 1, '03-may-OUT.jpg'),
-(4, 1, '06-may-IN.jpg');
+(1, 4, 'test.png');
 
 -- --------------------------------------------------------
 
@@ -169,15 +223,16 @@ CREATE TABLE IF NOT EXISTS `store_locations` (
   `address` text NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `store_locations`
 --
 
 INSERT INTO `store_locations` (`id`, `store_name`, `location`, `address`, `status`) VALUES
-(1, 'Test store', 'Test location', 'This is TS addr\r\n89plaza 88 20', 1),
-(2, 'Test store1', 'Test location2', 'Enu iii eiddr\r\n89plaza 88 20', 1);
+(1, 'OXON HILL', 'OXON HILL', '5225-B Indian Head Hwy. Oxon Hill, MD 20745', 1),
+(2, 'WALDORF', 'WALDORF', '3360 Crain Hwy Waldorf, MD 20603', 1),
+(3, 'Both', '-', '-', 1);
 
 -- --------------------------------------------------------
 
@@ -190,13 +245,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(55) NOT NULL,
   `email` varchar(155) NOT NULL,
+  `phone` varchar(15) NOT NULL,
   `password` text NOT NULL,
-  `type` varchar(15) NOT NULL DEFAULT 'admin',
+  `type` varchar(15) NOT NULL DEFAULT 'user',
   `device_id` varchar(255) NOT NULL,
+  `device_token` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL ,
+  `updated_at` datetime NOT NULL ,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `phone`, `password`, `type`, `device_id`, `device_token`, `created_at`, `updated_at`) VALUES
+(2, '', '', '0', '', 'admin', 'UUY-8999iii-898jasa', '787huys8ssuwwwwssuemlw90wsw08sxxssxj88w9sko', '2019-07-17 15:12:59', '2019-07-17 15:12:59'),
+(3, 'Karthik', '', '89998999887', '', 'user', 'aUUY-8999iii-898jasa', 'a787huys8ssuwwwwssuemlw90wsw08sxxssxj88w9sko', '2019-07-17 15:12:59', '2019-07-17 15:12:59'),
+(4, 'Test Admin', 'testadmin@topdollar.com', '8989898898', '$2a$10$CPs2dNAWyX24ED2YiFJz1uZsNE2y4cs6xVlhoAtxSkagp.v52RUaq', 'admin', 'fdYFCOQyFoWIkVG8rDSc', 'fdYFCOQyFoWIkVG8rDScfdYFCOQyFoWIkVG8rDScfdYFCOQyFoWIkVG8rDScfdYFCOQyFoWIkVG8rDScfdYFCOQyFoWIkVG8rDSc', '2019-07-17 15:12:59', '2019-07-17 15:12:59'),
+(5, 'Sooraj Admin', 'sooraj.v@topdollar.com', '0', '$2a$10$CPs2dNAWyX24ED2YiFJz1uZsNE2y4cs6xVlhoAtxSkagp.v52RUaq', 'admin', 'casdasd-asdasd-asdasdasd', '', '2019-07-17 15:12:59', '2019-07-17 15:12:59'),
+(8, 'Sooraj', 'sooraj@topdollar.com', '', '$2y$10$8H5uRv5XpkKyiPWpUTzC0OgyPEoXfJJ5BnMPI2XYCUb3U2x0QGI92', 'user', '', '', '2019-07-18 06:40:42', '2019-07-18 06:40:42');
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
