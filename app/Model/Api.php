@@ -67,7 +67,11 @@ class Api extends Model{
         $count = DB::table('users')->where('device_id', $input['device_id'])->count(); // check the device_id already exist in DB
         if($count == 0){
             DB::table('users')->insert($data);
-        }        
+        } else {
+            DB::table('users')->where('device_id', $input['device_id'])->update([
+                'device_token' => $input['device_token']
+            ]);
+        }     
         return true;
     }
 
@@ -112,7 +116,7 @@ class Api extends Model{
 
     //get admin tokens
     public static function getUsers($type = ""){
-        $data = DB::table('users')->where('device_id', '!=', '');
+        $data = DB::table('users')->where('device_token', '!=', '');
         if(!empty($type)){
             $data = $data->where('type', $type);
         }
@@ -148,7 +152,7 @@ class Api extends Model{
         DB::table('chats')->where('id', $input['chat_id'])->update($data);
 
         if($input['status'] == "accepted"){
-            $chat_data = DB::table('chats')->where('id', $input['chat_id'])->first();
+            $chat_data = DB::table('chats')->where('id', $input['chat_id'])->first();            
             $msg_data = array(
                 'chat_id'       => $input['chat_id'],
                 'sender_id'     => $chat_data->user_id,
@@ -157,6 +161,14 @@ class Api extends Model{
                 'created_at'    => date("Y-m-d H:i:s")
             );
             DB::table('messages')->insert($msg_data);
+
+            //send push notification to user when chat accepted
+            $user_data = DB::table('users')->where('id', $chat_data->user_id)->first();
+            $notification = array(
+                "title" => "Char request accepted",
+                "body"  => "Your chat request has been accepted"           
+            );
+            ResponseBuilder::sendPushNotification($user_data->device_token, $notification);     
         }
         return true;
     }
@@ -191,7 +203,8 @@ class Api extends Model{
         DB::table('messages')->insert($msg_data);
         // ---------- send push notification  -----------
         $data = array(
-            'chat_id' => $input['chat_id']
+            'chat_id' => $input['chat_id'],
+            'frm'  => 'chat_message' 
         );
         $notification = array(
             "title" => "New message",
@@ -225,11 +238,12 @@ class Api extends Model{
                         ->select("m.message", //DB::raw('CONCAT("'.$url.'/public/chat-images/",m.media_file) as chat_file'),
                             DB::raw('IF (m.media_file = "", "", CONCAT("'.$url.'/public/chat-images/",m.media_file)) as media_file'),
                             "sender.name as sender_name", "receiver.name as receiver_name", "sender.device_id as sender_device_id",
-                            "receiver.device_id as receiver_device_id", "m.sender_id", "m.receiver_id", "m.created_at"
+                            "receiver.device_id as receiver_device_id", "m.sender_id", "m.receiver_id", "m.created_at", "m.read_status"
                         )
                         ->leftJoin('users as sender', 'sender.id', '=', 'm.sender_id')
                         ->leftJoin('users as receiver', 'receiver.id', '=', 'm.receiver_id')
                         ->where('m.chat_id', $chat_id)
+                        ->orderBy('m.id')
                         ->get(); 
             return $messages;
         } else {
@@ -244,8 +258,18 @@ class Api extends Model{
         if(!empty($user_id)){
             $chats = $chats->where('c.accepted_user_id', $user_id);                                 
         } 
-        $chats = $chats->get();
+        $chats = $chats->orWhere('c.status', 'initiated')->OrderBy('c.created_at', 'desc')->get();
         return $chats;
+    }
+
+    //get last message
+    public static function getLastMessage($chat_id = ""){
+        $msg = DB::table('messages')
+                ->where('chat_id', $chat_id)
+                ->OrderBy('created_at', 'desc')
+                ->first();
+        return $msg;
+
     }
 
     //get chat list for admin
@@ -255,5 +279,26 @@ class Api extends Model{
                  ->where('c.status', '!=', 'closed')
                  ->get();
         return $chats;
+    }
+
+    public static function updateMessageReadStatus($input = array()){
+        $data = DB::table('messages')
+                ->where('chat_id', $input['chat_id'])->update([
+                    'read_status' => $input['status']
+                ]);              
+        return true;
+    }
+
+     //Function to get filters
+     public static function getAdBanners(){
+        $url = "https://topdollarjewelry.com/tdp-admin/";
+        $data = DB::table('ad_banners as ab')
+                ->select('ab.id',
+                    DB::raw('IF (ab.banner_image = "", "", CONCAT("'.$url.'uploads/ads/",ab.banner_image)) as banner_image'),
+                    'ab.external_link'
+                )
+                ->where('status', 1)
+                ->get();
+        return $data;
     }
 }

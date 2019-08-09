@@ -62,8 +62,10 @@ class ResponseBuilder {
         $fields = array (
             "registration_ids" => $registration_ids,
             "priority"      => "high",
-            "notification"  => $notification,
-            "data"          => $data
+            "message"=> array(
+                "notification"  => $notification,
+                "data"          => $data
+            )
         );
     
         //header includes Content type and api key

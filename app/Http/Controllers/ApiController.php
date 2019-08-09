@@ -107,7 +107,8 @@ class ApiController extends Controller
             //dd($admin_tokens);
             $message = "Chat request from a user: ".$input['name'];            
             $data = array(
-                'chat_id' => $chat_id
+                'chat_id' => $chat_id,
+                'frm'  => 'chat_initiate' 
             );
             $notification = array(
                 "title" => "Chat Request",
@@ -201,6 +202,7 @@ class ApiController extends Controller
                 "chat_data" => Api::getChatDetails($chat_id),
                 "messages" => Api::getMessages($chat_id)   
             );         
+            //dd(Api::getChatDetails($chat_id));    
             //dd($msg_data);    
             if(!empty($msg_data)){                
                 return ResponseBuilder::result(200, 'success', $msg_data); 
@@ -218,8 +220,28 @@ class ApiController extends Controller
         if(!empty($user_id)){
             $chat_list = Api::getChatLists($user_id);         
             //dd($chat_list);    
-            if(!empty($chat_list)){                
-                return ResponseBuilder::result(200, 'success', $chat_list); 
+            foreach($chat_list as $cl){
+                $last_message_data = Api::getLastMessage($cl->chat_id);
+                if(!empty($last_message_data)){
+                    $last_message = $last_message_data->message;
+                    $last_message_read = $last_message_data->read_status;
+                } else {
+                    $last_message = $cl->question;
+                    $last_message_read = 0;
+                }
+                $ch_list[] = array(
+                    'chat_id'           => $cl->chat_id,
+                    'user_name'         => $cl->user_name,
+                    'question'          => $cl->question,
+                    'last_message'      => $last_message,
+                    'last_message_read' => $last_message_read,
+                    'created_at'        => $cl->created_at,
+                    'status'            => $cl->status
+
+                );
+            }
+            if(!empty($ch_list)){                
+                return ResponseBuilder::result(200, 'success', $ch_list); 
             } else{
                 return ResponseBuilder::result(404, 'record_not_found'); 
             }
@@ -240,6 +262,62 @@ class ApiController extends Controller
                       
     }    
 
+    //accept chat appln - by admin
+    public function postReadMessageStatus(Request $request){
+        $input = $request->all();
+        $res = Api::updateMessageReadStatus($input);
+        $data = array(
+            'chat_id' => $input['chat_id'],
+            'status' => $input['status']
+        );
+        if($res){
+            return ResponseBuilder::result(200, 'success', $data); 
+        } else {
+            return ResponseBuilder::result(500, 'error');    
+        }
+    } 
+    
+    public function getAdBanners(){
+        
+        $ad_banners = Api::getAdBanners();         
+        if(!empty($ad_banners)){                
+            return ResponseBuilder::result(200, 'success', $ad_banners); 
+        } else{
+            return ResponseBuilder::result(404, 'record_not_found', $ad_banners); 
+        }
+                      
+    }
+    
+    public function sendBulkNotifications(Request $request){
+        $input = $request->all();
+
+        $users = Api::getUsers('user'); // get all users            
+        foreach($users as $user){
+            $user_tokens[] = $user->device_token;
+        }
+        //print_r($user_tokens); exit;
+        if(empty($user_tokens)) {
+            return ResponseBuilder::result(404, 'record_not_found');
+        }
+            $data = array(
+                'url' => $input['url']           
+            );
+            $notification = array(
+                "title" => $input['title'],
+                "body"  => $input['message']            
+            );
+            ResponseBuilder::sendPushNotification($user_tokens, $notification, $data);                                    
+        $user_count = count($user_tokens);
+        $data = array(
+            'user_count' => $user_count
+        );     
+        if($user_count > 0){
+            return ResponseBuilder::result(200, 'success', $data); 
+        } else {
+            return ResponseBuilder::result(404, 'record_not_found');
+        }
+    } 
+
 
 
     //********************* TEST CONTROLLERS ************************/
@@ -253,7 +331,7 @@ class ApiController extends Controller
         $input = $request->all();
         $device_tokens[] = $input['device_token'];    
         $notification = array(
-            "title" => "Hello!",
+            "title" => "Title text!",
             "body"  => $input['message']            
         );
         $data = $notification;

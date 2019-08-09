@@ -13,7 +13,7 @@
 
 $router->get('/', function () use ($router) {
     //return $router->app->version();
-    echo "<h4>Invalid Access!</h4>";
+    echo "<h4>Invalid Access!</h4>";    
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
@@ -32,9 +32,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('chat/messages/{chat_id}', 'ApiController@getChatMessages');   // get chat messages from server
         $router->get('chat/list/{user_id}', 'ApiController@getChatLists');          // get chat list for admin
         $router->get('chat/requests', 'ApiController@getChatRequests');             // notification list for admin
-
+        $router->post('chat/messages/read', 'ApiController@postReadMessageStatus'); // post chat messages read status
+        $router->post('notification/send', 'ApiController@sendBulkNotifications');  // Bulk push notifications
+        
+        $router->get('ads/list', 'ApiController@getAdBanners');             // ad list 
 
         $router->post('pushnotif/test', 'ApiController@sendPushNotification_TEST'); // test push notification
         //$router->get('auth/check', ['middleware' => 'auth',"ApiController@authCheck"]);     // Test auth middleware
     //});
 });
+
+$router->get('/admin', 'AdminController@index');

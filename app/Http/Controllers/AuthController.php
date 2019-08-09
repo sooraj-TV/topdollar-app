@@ -75,27 +75,28 @@ class AuthController extends Controller
     }
 
 
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-        //echo Hash::make($request->post('password')); exit;
-        if($validator->fails()){
-                //return response()->json($validator->errors()->toJson(), 400);
-                return ResponseBuilder::result(400, $validator->errors());
-        }
+    //REGISTER function
+    // public function register(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:6',
+    //     ]);
+    //     //echo Hash::make($request->post('password')); exit;
+    //     if($validator->fails()){
+    //             //return response()->json($validator->errors()->toJson(), 400);
+    //             return ResponseBuilder::result(400, $validator->errors());
+    //     }
         
-        $user = User::create([
-            'name' => $request->post('name'),
-            'email' => $request->post('email'),
-            'password' => Hash::make($request->post('password')),
-        ]);
+    //     $user = User::create([
+    //         'name' => $request->post('name'),
+    //         'email' => $request->post('email'),
+    //         'password' => Hash::make($request->post('password')),
+    //     ]);
 
-        $token = $this->jwt->fromUser($user);
+    //     $token = $this->jwt->fromUser($user);
 
-        return response()->json(compact('user','token'),201);
-    }
+    //     return response()->json(compact('user','token'),201);
+    // }
 }
