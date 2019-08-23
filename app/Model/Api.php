@@ -62,14 +62,16 @@ class Api extends Model{
     public static function registerDeviceAppln($input = array()){
         $data = array(
             'device_id' => $input['device_id'],
-            'device_token' => $input['device_token']
+            'device_token' => $input['device_token'],
+			'device_type' => $input['devicetype']
         );
         $count = DB::table('users')->where('device_id', $input['device_id'])->count(); // check the device_id already exist in DB
         if($count == 0){
             DB::table('users')->insert($data);
         } else {
             DB::table('users')->where('device_id', $input['device_id'])->update([
-                'device_token' => $input['device_token']
+                'device_token' => $input['device_token'],
+				'device_type' => $input['devicetype']
             ]);
         }     
         return true;
@@ -162,13 +164,17 @@ class Api extends Model{
             );
             DB::table('messages')->insert($msg_data);
 
-            //send push notification to user when chat accepted
+            //send push notification to user when chat accepted            
             $user_data = DB::table('users')->where('id', $chat_data->user_id)->first();
+            $device_type = $user_data->device_type;
+            $device_token = $user_data->device_token;
             $notification = array(
-                "title" => "Char request accepted",
-                "body"  => "Your chat request has been accepted"           
+                "title" => "Chat request accepted",
+                "body"  => "Your chat request has been accepted",
+                "badge" => 1        
             );
-            ResponseBuilder::sendPushNotification($user_data->device_token, $notification);     
+            $data = $notification;
+            ResponseBuilder::sendPushNotification($device_token, $notification, $data, $device_type);     
         }
         return true;
     }
@@ -190,6 +196,9 @@ class Api extends Model{
         
         $user_data = DB::table('users')->where('id', $receiver_id)->first();
         $device_token[] = $user_data->device_token;
+        $device_type = $user_data->device_type;
+        $badge_count = Api::updateBadgeCount($receiver_id);
+        if(empty($badge_count)) $badge_count = 1;
 
         $msg_data = array(  
             "chat_id"       => $input['chat_id'],
@@ -208,9 +217,10 @@ class Api extends Model{
         );
         $notification = array(
             "title" => "New message",
-            "body"  => $input['message']            
+            "body"  => $input['message'],
+            "badge" => $badge_count          
         );
-        ResponseBuilder::sendPushNotification($device_token, $notification, $data); 
+        ResponseBuilder::sendPushNotification($device_token, $notification, $data, $device_type); 
         // ---------- send push notification  -----------
         return true;
 
@@ -289,6 +299,8 @@ class Api extends Model{
         return true;
     }
 
+    //function static 
+
      //Function to get filters
      public static function getAdBanners(){
         $url = "https://topdollarjewelry.com/tdp-admin/";
@@ -300,5 +312,31 @@ class Api extends Model{
                 ->where('status', 1)
                 ->get();
         return $data;
+    }
+
+
+    //update badge count and return count
+    public static function updateBadgeCount($user_id = ""){
+        if(!empty($device_token)){
+            $data = DB::table('users')->where('id', $user_id)->get();
+            //dd($device_token);
+            $badge_count = $data->badge_count + 1;
+            DB::table('users')->where('id', $user_id)->update([
+                'badge_count' => $badge_count
+            ]);
+            return $badge_count;
+        } else {
+            return 1;
+        }        
+    }
+
+    //reset badge count
+    public static function resetBadgeCount($device_token = ""){
+        if(!empty($device_token)){
+            DB::table('users')->where('device_token', $device_token)->update([
+                'badge_count' => 0
+            ]);
+        }
+
     }
 }

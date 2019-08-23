@@ -112,9 +112,10 @@ class ApiController extends Controller
             );
             $notification = array(
                 "title" => "Chat Request",
-                "body"  => $message            
+                "body"  => $message,
+                "badge" => 1          
             );
-            ResponseBuilder::sendPushNotification($admin_tokens, $notification, $data);                        
+            ResponseBuilder::sendPushNotification($admin_tokens, $notification, $data, 'ios');                        
             return ResponseBuilder::result(200, 'success', $data);   
         }
         else{
@@ -293,20 +294,35 @@ class ApiController extends Controller
 
         $users = Api::getUsers('user'); // get all users            
         foreach($users as $user){
-            $user_tokens[] = $user->device_token;
-        }
-        //print_r($user_tokens); exit;
-        if(empty($user_tokens)) {
-            return ResponseBuilder::result(404, 'record_not_found');
+            if($user->device_type == "ios"){
+                $user_tokens_ios[] = $user->device_token;
+            } else if($user->device_type == "ios"){
+                $user_tokens_andro[] = $user->device_token;
+            } else {
+                $user_tokens[] = $user->device_token;
+            }
+            
         }
             $data = array(
                 'url' => $input['url']           
             );
             $notification = array(
                 "title" => $input['title'],
-                "body"  => $input['message']            
+                "body"  => $input['message'],
+                "badge" => 1        
             );
-            ResponseBuilder::sendPushNotification($user_tokens, $notification, $data);                                    
+            if(!empty($user_tokens_ios)){ //send IOS
+                ResponseBuilder::sendPushNotification($user_tokens_ios, $notification, $data, 'ios');                                    
+            }
+
+            if(!empty($user_tokens_andro)){ //send ANDROID
+                ResponseBuilder::sendPushNotification($user_tokens_andro, $notification, $data, 'android');                                    
+            }
+
+            if(!empty($user_tokens)){ //send OTHER
+                ResponseBuilder::sendPushNotification($user_tokens, $notification, $data);                                    
+            }
+            
         $user_count = count($user_tokens);
         $data = array(
             'user_count' => $user_count
@@ -330,12 +346,15 @@ class ApiController extends Controller
     public function sendPushNotification_TEST(Request $request){
         $input = $request->all();
         $device_tokens[] = $input['device_token'];    
-        $notification = array(
-            "title" => "Title text!",
-            "body"  => $input['message']            
+        $device = $input['devicetype'];
+        $badge_count = 1; //Api::updateBadgeCount($input['device_token']);
+		$notification = array(
+            "title" => "Hello!",
+            "body"  => $input['message'],
+            "badge" => $badge_count
         );
-        $data = $notification;
-        return ResponseBuilder::sendPushNotificationTEST($device_tokens, $notification, $data);        
+        $data = $notification;        
+        return ResponseBuilder::sendPushNotificationTEST($device_tokens, $notification, $data, $device);        
 
     }
 

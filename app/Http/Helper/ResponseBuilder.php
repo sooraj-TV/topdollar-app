@@ -11,7 +11,7 @@ class ResponseBuilder {
     }
 
     //send push notification
-    public static function sendPushNotification($registration_ids = array(), $notification = array(), $data = array()){
+    public static function sendPushNotification($registration_ids = array(), $notification = array(), $data = array(), $device = ""){
 
         //API URL of FCM
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -19,13 +19,28 @@ class ResponseBuilder {
         /*api_key available in:
         Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/    
         $api_key = env('FIREBASE_KEY');
-                    
-        $fields = array (
-            "registration_ids" => $registration_ids,
-            "priority"      => "high",
-            "notification"  => $notification,
-            "data"          => $data
+        $notif = array(
+            "sound" => 'default', 
+            "badge" => '1',
+            "content-available" => "1"    
         );
+        $notification = array_merge($notification, $notif);
+        if($device == "android"){
+            $data = array_merge($data, $notification);
+            $fields = array (
+                "registration_ids" => $registration_ids,
+                "priority"      => "high",
+                //"notification"  => $notification,
+                "data"          => $data				
+            );
+        } else {
+            $fields = array (
+                "registration_ids" => $registration_ids,
+                "priority"      => "high",
+                "notification"  => $notification,
+                "data"          => $data				
+            );
+        }
     
         //header includes Content type and api key
         $headers = array(
@@ -50,23 +65,37 @@ class ResponseBuilder {
     }
 
     //send push notification - TEST
-    public static function sendPushNotificationTEST($registration_ids = array(), $notification = array(), $data = array()){
+    public static function sendPushNotificationTEST($registration_ids = array(), $notification = array(), $data = array(), $device = ""){
 
         //API URL of FCM
         $url = 'https://fcm.googleapis.com/fcm/send';
     
         /*api_key available in:
         Firebase Console -> Project Settings -> CLOUD MESSAGING -> Server key*/    
-        $api_key = env('FIREBASE_KEY');
-                    
-        $fields = array (
-            "registration_ids" => $registration_ids,
-            "priority"      => "high",
-            "message"=> array(
-                "notification"  => $notification,
-                "data"          => $data
-            )
+        $api_key = env('FIREBASE_KEY');          
+        
+        $notif = array(
+            "sound" => 'default', 
+            "content-available" => "1"    
         );
+        $notification = array_merge($notification, $notif);
+        if($device == "android"){
+            $data = array_merge($data, $notification);
+            $fields = array (
+                "registration_ids" => $registration_ids,
+                "priority"      => "high",
+                //"notification"  => $notification,
+                "data"          => $data				
+            );
+        } else {
+            $fields = array (
+                "registration_ids" => $registration_ids,
+                "priority"      => "high",
+                "notification"  => $notification,
+                "data"          => $data				
+            );
+        }
+        
     
         //header includes Content type and api key
         $headers = array(
