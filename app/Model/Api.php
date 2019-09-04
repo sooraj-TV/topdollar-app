@@ -88,7 +88,7 @@ class Api extends Model{
     }
 
     public static function postChatAssociateAppln($input = array()){
-        //$res = array();
+        //$res = array();        
         $user_data = DB::table('users')->where('device_id', $input['device_id'])->first(); // get userdata by device_id
         $user_id = $user_data->id;
 
@@ -167,7 +167,7 @@ class Api extends Model{
             //send push notification to user when chat accepted            
             $user_data = DB::table('users')->where('id', $chat_data->user_id)->first();
             $device_type = $user_data->device_type;
-            $device_token = $user_data->device_token;
+            $device_token[] = $user_data->device_token;
             $notification = array(
                 "title" => "Chat request accepted",
                 "body"  => "Your chat request has been accepted",
@@ -175,6 +175,7 @@ class Api extends Model{
             );
             $data = $notification;
             ResponseBuilder::sendPushNotification($device_token, $notification, $data, $device_type);     
+            //exit;
         }
         return true;
     }

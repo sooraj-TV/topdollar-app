@@ -223,7 +223,7 @@ class ApiController extends Controller
             //dd($chat_list);    
             foreach($chat_list as $cl){
                 $last_message_data = Api::getLastMessage($cl->chat_id);
-                if(!empty($last_message_data)){
+                if(!empty($last_message_data)){							
                     $last_message = $last_message_data->message;
                     $last_message_read = $last_message_data->read_status;
                 } else {
@@ -291,18 +291,23 @@ class ApiController extends Controller
     
     public function sendBulkNotifications(Request $request){
         $input = $request->all();
-
+        $user_tokens_ios = array();
+        $user_tokens_andro = array();
+        $user_tokens = array();
         $users = Api::getUsers('user'); // get all users            
         foreach($users as $user){
             if($user->device_type == "ios"){
                 $user_tokens_ios[] = $user->device_token;
-            } else if($user->device_type == "ios"){
+            } else if($user->device_type == "android"){
                 $user_tokens_andro[] = $user->device_token;
             } else {
                 $user_tokens[] = $user->device_token;
-            }
-            
+            }            
         }
+        // array_unique($user_tokens_ios);
+        // array_unique($user_tokens_andro);
+        // array_unique($user_tokens);
+
             $data = array(
                 'url' => $input['url']           
             );
@@ -311,6 +316,10 @@ class ApiController extends Controller
                 "body"  => $input['message'],
                 "badge" => 1        
             );
+            // print_r($user_tokens_ios);
+            // print_r($user_tokens_andro);
+            // print_r($user_tokens);
+
             if(!empty($user_tokens_ios)){ //send IOS
                 ResponseBuilder::sendPushNotification($user_tokens_ios, $notification, $data, 'ios');                                    
             }

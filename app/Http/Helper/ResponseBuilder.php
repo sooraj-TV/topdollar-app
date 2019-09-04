@@ -41,6 +41,8 @@ class ResponseBuilder {
                 "data"          => $data				
             );
         }
+
+        //print_r($fields); exit;
     
         //header includes Content type and api key
         $headers = array(
