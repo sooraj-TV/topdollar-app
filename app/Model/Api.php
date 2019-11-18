@@ -44,6 +44,9 @@ class Api extends Model{
             'model_number'  => $input['model_number'],
             'brand'         => $input['brand'],
             'description'   => $input['description'],
+            'jewelry_type'  => $input['jewelry_type'],
+            'metal_type'    => $input['metal_type'],
+            'weight'        => $input['weight'],
             'device_token'  => $input['device_id'],
             'created_at'    => date("Y-m-d H:i:s")
         );
@@ -51,6 +54,19 @@ class Api extends Model{
         $quote_id = DB::table('quotes')->insertGetId($qData);
 
         return $quote_id;
+        // name
+        // phone
+        // store_name
+        // store_location_id
+        // category_id
+        // category_name
+        // model_number
+        // brand
+        // description
+        // quote_images[]
+        // device_id
+        // jewelry_type
+        // metal_type
     }
 
     // insert quote image data
@@ -128,15 +144,36 @@ class Api extends Model{
     }
 
     //get chat details from chat-id
+    //OLD CODE
+    // DB::table("chats as c")
+    //             ->select('c.id as chat_id', 'c.name as user_name', 'c.phone as phone', 
+    //             'sl.store_name as store_location', 'c.question as question', 'c.created_at', 
+    //             'c.status as chat_status', 'c.user_id', 'c.accepted_user_id')
+    //             ->where('c.id', $chat_id)
+    //             ->join('store_locations as sl', 'sl.id', '=', 'c.store_location_id')                
+    //             ->first();
     public static function getChatDetails($chat_id = ""){
         $data = DB::table("chats as c")
                 ->select('c.id as chat_id', 'c.name as user_name', 'c.phone as phone', 
                 'sl.store_name as store_location', 'c.question as question', 'c.created_at', 
-                'c.status as chat_status', 'c.user_id', 'c.accepted_user_id')
+                'c.status as chat_status', 'c.user_id', 'c.accepted_user_id', 'cat.category', 'q.jewelry_type',
+                'q.metal_type', 'q.weight', 'q.model_number', 'q.brand', 'q.description')
                 ->where('c.id', $chat_id)
-                ->join('store_locations as sl', 'sl.id', '=', 'c.store_location_id')                
+                ->join('store_locations as sl', 'sl.id', '=', 'c.store_location_id')   
+                ->leftJoin('quotes as q', 'q.id', '=', 'c.quote_id')        
+                ->leftJoin('categories as cat', 'cat.id', '=', 'q.category_id')     
                 ->first();
         return $data;
+    }
+
+    public static function getQuoteImages($chat_id = ""){
+        $url = str_replace('/index.php','',url(''));
+        $data = DB::table("chats as c")->select('c.quote_id')->where('c.id', $chat_id)->first();
+        $quote_id = $data->quote_id;
+        $images = DB::table("quote_images")
+                    ->select(DB::raw('CONCAT("'.$url.'/public/quote-images/",image_path) as image_path')) 
+                    ->where('quote_id', $quote_id)->get();
+        return $images;
     }
 
     //accept/reject chat by admin
@@ -205,7 +242,7 @@ class Api extends Model{
             "chat_id"       => $input['chat_id'],
             "sender_id"     => $sender_id,
             "receiver_id"   => $receiver_id,
-            "message"       => $input['message'],
+            "message"       => utf8_encode($input['message']),
             "media_file"    => $input['media_file'],
             "created_at"    => date("Y-m-d H:i:s")            
         );
@@ -248,6 +285,7 @@ class Api extends Model{
             $messages = DB::table('messages as m')
                         ->select("m.message", //DB::raw('CONCAT("'.$url.'/public/chat-images/",m.media_file) as chat_file'),
                             DB::raw('IF (m.media_file = "", "", CONCAT("'.$url.'/public/chat-images/",m.media_file)) as media_file'),
+                            DB::raw('CONVERT(CONVERT(CONVERT(m.message USING latin1) USING binary) USING utf8) as msg'),
                             "sender.name as sender_name", "receiver.name as receiver_name", "sender.device_id as sender_device_id",
                             "receiver.device_id as receiver_device_id", "m.sender_id", "m.receiver_id", "m.created_at", "m.read_status"
                         )

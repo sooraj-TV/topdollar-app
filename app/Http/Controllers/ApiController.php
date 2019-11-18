@@ -68,6 +68,24 @@ class ApiController extends Controller
                     'quote_id'          => $quote_id
                 );
                 $chat_id = Api::postChatAssociateAppln($chat_data);
+
+                //send push notification to all admins
+                $admins = Api::getUsers('admin'); // get admin users            
+                foreach($admins as $admin){
+                    $admin_tokens[] = $admin->device_token;
+                }
+                $message = "Chat request from a user: ".$input['name'];            
+                $data = array(
+                    'chat_id' => $chat_id,
+                    'frm'  => 'chat_initiate' 
+                );
+                $notification = array(
+                    "title" => "Chat Request",
+                    "body"  => $message,
+                    "badge" => 1          
+                );
+                ResponseBuilder::sendPushNotification($admin_tokens, $notification, $data, 'ios');      
+
                 $res_data = array(
                     'chat_id' => $chat_id
                 );
@@ -201,6 +219,7 @@ class ApiController extends Controller
         if(!empty($chat_id)){
             $msg_data = array(
                 "chat_data" => Api::getChatDetails($chat_id),
+                "quote_images" => Api::getQuoteImages($chat_id),
                 "messages" => Api::getMessages($chat_id)   
             );         
             //dd(Api::getChatDetails($chat_id));    
@@ -332,7 +351,7 @@ class ApiController extends Controller
                 ResponseBuilder::sendPushNotification($user_tokens, $notification, $data);                                    
             }
             
-        $user_count = count($user_tokens);
+        $user_count = count($user_tokens) + count($user_tokens_ios) + count($user_tokens_andro);
         $data = array(
             'user_count' => $user_count
         );     
